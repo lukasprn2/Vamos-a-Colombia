@@ -3,13 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Presidentes de Colombia � L�nea del Tiempo 1990�2026</title>
+<title>Presidentes de Colombia – Frise 1990–2026</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:ital,wght@0,400;0,700;0,900;1,700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --am: #FCD116; /* amarillo */
-  --az: #003893; /* azul */
-  --ro: #CE1126; /* rojo */
+  --am: #FCD116;
+  --az: #003893;
+  --ro: #CE1126;
+  --ve: #1a7a1a;
+  --cr: #FFFBF0;
   --dk: #0a0400;
 }
 
@@ -24,7 +26,7 @@ body {
   min-height: 100vh;
 }
 
-/* -- HERO -- */
+/* ══ HERO ══ */
 .hero {
   position: relative;
   text-align: center;
@@ -101,7 +103,7 @@ body {
   animation:drop .9s .35s cubic-bezier(.22,1,.36,1) both;
 }
 
-/* -- TIMELINE WRAPPER -- */
+/* ══ TIMELINE WRAPPER ══ */
 .tl-outer {
   position:relative;
   padding: 4rem 0 5rem;
@@ -115,9 +117,13 @@ body {
   height:6px;
   transform:translateY(-50%);
   background:linear-gradient(90deg,
-    var(--am) 0%,
-    var(--az) 50%,
-    var(--ro) 100%
+    var(--am) 0%, var(--am) 14%,
+    var(--ro) 14%, var(--ro) 28%,
+    var(--az) 28%, var(--az) 42%,
+    var(--ro) 42%, var(--ro) 56%,
+    #F4A261 56%, #F4A261 70%,
+    var(--az) 70%, var(--az) 84%,
+    #7c3fa0 84%, #7c3fa0 100%
   );
   z-index:0;
 }
@@ -130,7 +136,7 @@ body {
 }
 .tl-axis::after{
   right:-2px;
-  border-left:16px solid var(--ro);
+  border-left:16px solid #7c3fa0;
 }
 .tl-axis::before{
   left:-2px;
@@ -159,7 +165,7 @@ body {
   position:relative;
 }
 
-/* -- NODE -- */
+/* ── NODE ── */
 .tl-node {
   display:flex;
   flex-direction:column;
@@ -213,8 +219,474 @@ body {
 .tl-node:hover .tl-card {
   background:#1f1515;
   transform:scale(1.06);
-  box-shadow:0 8px 32px rgba(0,0,0,.5);
+  box-shadow:0 8px 32px rgba(0,0,0,.5), 0 0 20px rgba(var(--rc),0.3);
 }
 
 .tl-card-top {
   height:5px;border-radius:10px 10px 0 0;
+  margin:-1rem -1rem .8rem;
+  background:currentColor;
+}
+.tl-year {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.7rem;line-height:1;
+  color:currentColor;
+}
+.tl-name {
+  font-size:.75rem;font-weight:900;
+  line-height:1.3;margin:.3rem 0 .2rem;
+  color:#fff;
+}
+.tl-partido {
+  font-size:.62rem;font-weight:700;
+  color:rgba(255,255,255,.45);
+  text-transform:uppercase;letter-spacing:.08em;
+}
+.tl-emoji-card {
+  font-size:1.4rem;margin-bottom:.25rem;display:block;
+}
+.tl-badge {
+  display:inline-block;margin-top:.5rem;
+  font-size:.58rem;font-weight:800;
+  letter-spacing:.1em;text-transform:uppercase;
+  padding:.1rem .45rem;border-radius:100px;
+  background:currentColor;color:var(--dk);
+}
+
+/* Year label on axis */
+.tl-axis-year {
+  position:absolute;
+  bottom:-38px;
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.1rem;
+  color:rgba(255,255,255,.3);
+  white-space:nowrap;
+}
+
+/* ══ SCROLL ARROWS ══ */
+.nav-arrows {
+  display:flex;justify-content:center;gap:1rem;
+  padding:.8rem 0 0;
+}
+.nav-btn {
+  background:rgba(255,255,255,.08);
+  border:2px solid rgba(255,255,255,.2);
+  color:#fff;border-radius:50%;
+  width:44px;height:44px;font-size:1.2rem;
+  cursor:pointer;
+  transition:background .2s,border-color .2s,transform .2s;
+  display:flex;align-items:center;justify-content:center;
+}
+.nav-btn:hover{background:var(--am);border-color:var(--am);color:var(--dk);transform:scale(1.1);}
+
+/* ══ MODAL ══ */
+.overlay {
+  position:fixed;inset:0;
+  background:rgba(0,0,0,.85);
+  z-index:1000;
+  display:flex;align-items:center;justify-content:center;
+  padding:1rem;
+  opacity:0;pointer-events:none;
+  transition:opacity .3s;
+  backdrop-filter:blur(10px);
+}
+.overlay.open{opacity:1;pointer-events:all;}
+
+.modal {
+  background:#130c05;
+  border-radius:24px;
+  max-width:660px;width:100%;
+  max-height:90vh;overflow-y:auto;
+  transform:scale(.82) translateY(40px);
+  transition:transform .38s cubic-bezier(.22,1,.36,1);
+  position:relative;
+  border:1px solid rgba(255,255,255,.1);
+  scrollbar-width:thin;scrollbar-color:var(--am) transparent;
+}
+.overlay.open .modal{transform:scale(1) translateY(0);}
+
+.modal-banner {
+  height:12px;border-radius:24px 24px 0 0;
+  display:flex;overflow:hidden;
+}
+.modal-banner span{display:block;height:100%;}
+.modal-banner span:nth-child(1){flex:2;background:var(--am);}
+.modal-banner span:nth-child(2){flex:1;background:var(--az);}
+.modal-banner span:nth-child(3){flex:1;background:var(--ro);}
+
+.modal-body { padding:2rem 2.2rem 2.5rem; }
+
+.m-tag {
+  display:inline-block;font-size:.68rem;font-weight:800;
+  letter-spacing:.14em;text-transform:uppercase;
+  padding:.13rem .6rem;border-radius:100px;
+  margin-bottom:.9rem;
+}
+.m-emoji{font-size:3.5rem;display:block;margin-bottom:.5rem;}
+.m-name {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(2rem,5vw,3.2rem);
+  line-height:1;color:#fff;
+}
+.m-period{
+  font-size:.85rem;font-weight:700;letter-spacing:.08em;
+  margin:.4rem 0 .15rem;
+}
+.m-partido{font-size:.8rem;color:rgba(255,255,255,.4);margin-bottom:1.2rem;}
+.m-desc{
+  font-size:.95rem;line-height:1.85;
+  color:rgba(255,255,255,.75);margin-bottom:1.5rem;
+}
+
+.m-section{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.3rem;margin-bottom:.8rem;letter-spacing:.04em;
+}
+.m-logros{list-style:none;display:flex;flex-direction:column;gap:.6rem;margin-bottom:1.5rem;}
+.m-logros li{
+  background:rgba(255,255,255,.05);
+  border-radius:12px;padding:.75rem 1rem;
+  font-size:.88rem;line-height:1.6;
+  display:flex;gap:.7rem;align-items:flex-start;
+  border-left:3px solid transparent;
+  color:rgba(255,255,255,.8);
+}
+.m-logros li .ico{flex-shrink:0;font-size:1.1rem;}
+
+.m-datos{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));
+  gap:.7rem;margin-bottom:1.5rem;
+}
+.m-dato{
+  background:rgba(255,255,255,.05);border-radius:12px;
+  padding:.8rem;text-align:center;
+}
+.m-dato .dn{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:2rem;line-height:1;
+}
+.m-dato .dl{
+  font-size:.65rem;font-weight:800;letter-spacing:.12em;
+  text-transform:uppercase;color:rgba(255,255,255,.35);margin-top:.2rem;
+}
+.m-cita{
+  border-left:4px solid;
+  border-radius:0 12px 12px 0;
+  background:rgba(255,255,255,.04);
+  padding:1rem 1.2rem;
+  font-style:italic;font-size:.9rem;
+  color:rgba(255,255,255,.6);line-height:1.75;
+}
+.m-cita cite{
+  display:block;margin-top:.5rem;
+  font-style:normal;font-size:.72rem;font-weight:800;
+  letter-spacing:.12em;text-transform:uppercase;
+  color:rgba(255,255,255,.3);
+}
+
+.close-btn{
+  position:absolute;top:1.4rem;right:1.4rem;
+  background:rgba(255,255,255,.1);border:none;
+  border-radius:50%;width:40px;height:40px;
+  font-size:1.1rem;font-weight:900;color:#fff;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:background .2s,transform .2s;z-index:2;
+}
+.close-btn:hover{background:rgba(255,255,255,.2);transform:scale(1.1) rotate(90deg);}
+
+/* ══ FOOTER ══ */
+footer{
+  background:var(--az);color:#fff;
+  text-align:center;padding:2.5rem 1.5rem;
+}
+.f-flag{display:flex;justify-content:center;margin-bottom:.9rem;}
+.f-flag span{height:8px;display:block;}
+.f-flag span:nth-child(1){width:110px;background:var(--am);}
+.f-flag span:nth-child(2){width:55px;background:var(--az);}
+.f-flag span:nth-child(3){width:55px;background:var(--ro);}
+footer h3{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--am);letter-spacing:.1em;}
+footer p{font-size:.78rem;opacity:.5;margin-top:.3rem;}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-noise"></div>
+  <div class="hero-flag-bar"><span></span><span></span><span></span></div>
+  <div class="hero-deco"><span></span><span></span></div>
+  <span class="hero-emoji">🇨🇴</span>
+  <h1>PRESIDENTES<br>DE COLOMBIA</h1>
+  <p class="hero-sub">✦ Línea del Tiempo 1990 – 2026 ✦</p>
+  <p class="hero-hint">Arrastra la frise · Haz clic en cada presidente para saber más</p>
+</header>
+
+<!-- ARROWS -->
+<div style="background:var(--dk);padding:1.5rem 0 0;display:flex;justify-content:center;gap:.8rem;align-items:center;">
+  <button class="nav-btn" id="btnLeft">◀</button>
+  <span style="font-size:.72rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.3);">Navegar la frise</span>
+  <button class="nav-btn" id="btnRight">▶</button>
+</div>
+
+<!-- TIMELINE -->
+<div class="tl-outer">
+  <div class="tl-axis"></div>
+  <div class="tl-scroll" id="tlScroll">
+    <div class="tl-track" id="tlTrack"></div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="overlay" id="overlay">
+  <div class="modal" id="modal">
+    <div class="modal-banner"><span></span><span></span><span></span></div>
+    <button class="close-btn" id="closeBtn">✕</button>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="f-flag"><span></span><span></span><span></span></div>
+  <h3>¡Viva Colombia!</h3>
+  <p>Frise Chronologique Interactiva · Presidentes 1990–2026</p>
+</footer>
+
+<script>
+const DATA = [
+  {
+    nombre:"César Gaviria Trujillo",
+    inicio:1990, fin:1994,
+    partido:"Partido Liberal",
+    tag:"Liberal",
+    color:"#E63946",
+    emoji:"🗳️",
+    desc:"César Gaviria llegó al poder en uno de los momentos más violentos de la historia colombiana. Su gran legado fue impulsar la Asamblea Nacional Constituyente que dio lugar a la Constitución de 1991, considerada una de las más avanzadas del mundo. También inició la apertura económica e impulsó la caída del Cartel de Medellín.",
+    logros:[
+      {ico:"📜",txt:"Constitución de 1991: derechos fundamentales, pluralismo, diversidad étnica."},
+      {ico:"📡",txt:"Apertura económica neoliberal: reducción de aranceles e integración al comercio global."},
+      {ico:"💥",txt:"Muerte de Pablo Escobar en diciembre de 1993, desmantelando el Cartel de Medellín."},
+      {ico:"🏛️",txt:"Creó la Fiscalía General de la Nación y la Corte Constitucional."},
+      {ico:"📺",txt:"Adjudicó canales privados de televisión (RCN y Caracol), rompiendo el monopolio estatal."},
+    ],
+    datos:[{n:"1991",l:"Constitución"},{n:"4",l:"Años en poder"},{n:"Medellín",l:"Cartel caído"}],
+    cita:"\"Colombia necesitaba renovarse desde sus cimientos. La Constitución del 91 fue nuestra refundación como nación.\""
+  },
+  {
+    nombre:"Ernesto Samper Pizano",
+    inicio:1994, fin:1998,
+    partido:"Partido Liberal",
+    tag:"Liberal",
+    color:"#2A9D8F",
+    emoji:"⚠️",
+    desc:"El gobierno de Samper estuvo marcado por el escándalo del Proceso 8.000, que reveló que su campaña recibió dinero del Cartel de Cali. Esto generó una crisis política sin precedentes, la descertificación por EE.UU. y aislamiento diplomático. Fue absuelto por el Congreso pero su presidencia quedó marcada por la controversia.",
+    logros:[
+      {ico:"⚠️",txt:"Proceso 8.000: acusación de narcofinanciación de su campaña; absuelto por la Cámara en 1996."},
+      {ico:"🌍",txt:"EE.UU. descertificó a Colombia dos años seguidos por la crisis antidrogas."},
+      {ico:"👷",txt:"Plan 'El Salto Social': reducción de pobreza y programas de vivienda y salud."},
+      {ico:"💊",txt:"Desmantelamiento del Cartel de Cali y extradición de varios líderes narcos."},
+      {ico:"⚖️",txt:"Fortaleció la Fiscalía y promovió herramientas anticorrupción."},
+    ],
+    datos:[{n:"8.000",l:"Proceso judicial"},{n:"4",l:"Años en poder"},{n:"1996",l:"Descertificación"}],
+    cita:"\"Entré con el corazón y los votos del pueblo colombiano, y fue el pueblo quien me absolvió.\""
+  },
+  {
+    nombre:"Andrés Pastrana Arango",
+    inicio:1998, fin:2002,
+    partido:"Partido Conservador",
+    tag:"Conservador",
+    color:"#1d4ed8",
+    emoji:"🕊️",
+    desc:"Pastrana apostó todo al diálogo con las FARC creando la 'zona de distensión' del Caguán, una área desmilitarizada del tamaño de Suiza. Las negociaciones fracasaron en 2002, pero en paralelo negoció el Plan Colombia con EE.UU., un acuerdo multimillonario que transformó las fuerzas militares del país.",
+    logros:[
+      {ico:"🕊️",txt:"Proceso de paz en El Caguán: zona de distensión de 42.000 km² con las FARC (1998–2002)."},
+      {ico:"🇺🇸",txt:"Plan Colombia: 1.300 millones de dólares de EE.UU. para lucha antidrogas y modernización militar."},
+      {ico:"📉",txt:"Colombia sufrió su peor recesión en 70 años en 1999, con desempleo superior al 20%."},
+      {ico:"✈️",txt:"Reactivó la extradición de narcos a EE.UU., suspendida desde 1991."},
+      {ico:"🏗️",txt:"Impulsó reformas al sistema pensional y laboral en plena crisis económica."},
+    ],
+    datos:[{n:"42.000",l:"km² zona paz"},{n:"1.300M",l:"USD Plan Colombia"},{n:"4",l:"Años en poder"}],
+    cita:"\"Le aposté a la paz porque Colombia merece vivir sin guerra. No me arrepiento del intento.\""
+  },
+  {
+    nombre:"Álvaro Uribe Vélez",
+    inicio:2002, fin:2010,
+    partido:"Primero Colombia / Partido de la U",
+    tag:"Uribismo",
+    color:"#CE1126",
+    emoji:"⚔️",
+    desc:"El presidente más popular de la historia reciente de Colombia. Con su Política de Seguridad Democrática recuperó el control territorial del Estado, redujo los secuestros en un 90% y golpeó duramente a las FARC. Gobernó 8 años gracias a una reforma de reelección, transformando radicalmente la percepción de seguridad del país.",
+    logros:[
+      {ico:"⚔️",txt:"Política de Seguridad Democrática: reducción de homicidios en 40% y secuestros en 90%."},
+      {ico:"🎖️",txt:"Operación Jaque (2008): rescate de Ingrid Betancourt y 14 rehenes sin disparar un tiro."},
+      {ico:"🔄",txt:"Reforma constitucional de reelección: reelegido en 2006 con el 62% de los votos."},
+      {ico:"📈",txt:"El PIB pasó de 98.000 a 234.000 millones de USD durante sus 8 años de gobierno."},
+      {ico:"🤝",txt:"Ley de Justicia y Paz: desmovilización de 30.000 paramilitares de las AUC."},
+      {ico:"⚠️",txt:"Escándalo de los 'falsos positivos': civiles asesinados y presentados como guerrilleros."},
+    ],
+    datos:[{n:"8",l:"Años en poder"},{n:"-90%",l:"Reducción secuestros"},{n:"62%",l:"Votos 2006"}],
+    cita:"\"Mano firme, corazón grande.\""
+  },
+  {
+    nombre:"Juan Manuel Santos Calderón",
+    inicio:2010, fin:2018,
+    partido:"Partido de la U",
+    tag:"Centro-Derecha",
+    color:"#F4A261",
+    emoji:"🏆",
+    desc:"Santos pasó de ser el ministro de Defensa que dio los golpes más duros a las FARC, a convertirse en el arquitecto del histórico Acuerdo de Paz de 2016. Tras cuatro años de negociaciones en La Habana, logró poner fin a más de 52 años de conflicto armado. Por este logro recibió el Premio Nobel de la Paz.",
+    logros:[
+      {ico:"🕊️",txt:"Firmó el Acuerdo Final de Paz con las FARC el 24 de noviembre de 2016, fin de 52 años de conflicto."},
+      {ico:"🏆",txt:"Premio Nobel de la Paz 2016 en Oslo, segundo colombiano premiado tras García Márquez."},
+      {ico:"🗳️",txt:"El plebiscito fue rechazado por el 50.2%; el acuerdo fue renegociado y ratificado por el Congreso."},
+      {ico:"📈",txt:"Inició el proceso de adhesión de Colombia a la OCDE (finalizado en 2020)."},
+      {ico:"🛣️",txt:"Programa 4G: la mayor inversión en infraestructura vial de la historia del país."},
+      {ico:"🌱",txt:"Implementó políticas de restitución de tierras a víctimas del conflicto armado."},
+    ],
+    datos:[{n:"8",l:"Años en poder"},{n:"2016",l:"Nobel de Paz"},{n:"52",l:"Años de conflicto"}],
+    cita:"\"La paz no es el silencio de los fusiles. Es la victoria de la esperanza sobre el miedo.\""
+  },
+  {
+    nombre:"Iván Duque Márquez",
+    inicio:2018, fin:2022,
+    partido:"Centro Democrático",
+    tag:"Centro Democrático",
+    color:"#2d6a4f",
+    emoji:"😷",
+    desc:"El presidente más joven de la era moderna (41 años al asumir). Su gobierno estuvo marcado por la pandemia del COVID-19 y el Estallido Social de 2021, el mayor movimiento de protesta de la historia reciente. En política exterior, Colombia acogió a más de 1,8 millones de migrantes venezolanos con el Estatuto Temporal de Protección.",
+    logros:[
+      {ico:"😷",txt:"Gestionó la pandemia con el programa 'Ingreso Solidario', uno de los más amplios de América Latina."},
+      {ico:"✊",txt:"Paro Nacional de 2021: semanas de protestas masivas con decenas de muertos y heridos."},
+      {ico:"🇻🇪",txt:"Estatuto Temporal de Protección para 1,8 millones de migrantes venezolanos, hito humanitario mundial."},
+      {ico:"🌿",txt:"Iniciativa 'Colombia Potencia Mundial de la Vida': biodiversidad y desarrollo sostenible."},
+      {ico:"💊",txt:"Reguló el consumo de cannabis medicinal, abriendo un nuevo sector económico."},
+      {ico:"🏛️",txt:"Concretó la adhesión formal de Colombia a la OCDE en 2020."},
+    ],
+    datos:[{n:"41",l:"Años al asumir"},{n:"1.8M",l:"Migrantes venezolanos"},{n:"4",l:"Años en poder"}],
+    cita:"\"Colombia tiene el talento, la biodiversidad y la determinación para ser una potencia global.\""
+  },
+  {
+    nombre:"Gustavo Petro Urrego",
+    inicio:2022, fin:2026,
+    partido:"Pacto Histórico / Colombia Humana",
+    tag:"Izquierda",
+    color:"#7c3fa0",
+    emoji:"🌹",
+    desc:"Petro, exguerrillero del M-19, hizo historia el 7 de agosto de 2022 al convertirse en el primer presidente de izquierda elegido democráticamente en Colombia, junto a Francia Márquez, primera vicepresidenta afrocolombiana. Impulsó la 'Paz Total' y reformas sociales ambiciosas, y anunció el fin de nuevos contratos de exploración petrolera.",
+    logros:[
+      {ico:"🌹",txt:"Primer presidente de izquierda en la historia de Colombia, elegido con 50.4% de los votos."},
+      {ico:"👩🏿",txt:"Francia Márquez: primera vicepresidenta afrocolombiana e indígena, símbolo de inclusión histórica."},
+      {ico:"🕊️",txt:"Política de 'Paz Total': diálogos simultáneos con el ELN, disidencias FARC y bandas criminales."},
+      {ico:"🛢️",txt:"Anunció el fin de nuevos contratos de exploración de petróleo para avanzar en transición energética."},
+      {ico:"🏥",txt:"Propuso ambiciosas reformas de salud, pensiones y trabajo que generaron amplio debate político."},
+      {ico:"🌿",txt:"Propuso la legalización de la cocaína como estrategia antidrogas en foros internacionales."},
+    ],
+    datos:[{n:"50.4%",l:"Votos obtenidos"},{n:"2022",l:"Año de elección"},{n:"1er",l:"Pdte izquierda"}],
+    cita:"\"El cambio llegó a Colombia. Es el momento del pueblo, de los humildes, de los que nunca tuvieron voz.\""
+  },
+];
+
+// ── BUILD TIMELINE ──
+const track = document.getElementById('tlTrack');
+
+DATA.forEach((p, i) => {
+  const node = document.createElement('div');
+  node.className = 'tl-node';
+  node.style.color = p.color;
+
+  const isOdd = i % 2 === 0;
+  const textColor = p.color === '#F4A261' ? '#1a0a00' : '#fff';
+
+  node.innerHTML = `
+    ${isOdd ? `
+      <div class="tl-card" style="color:${p.color};">
+        <div class="tl-card-top"></div>
+        <span class="tl-emoji-card">${p.emoji}</span>
+        <div class="tl-year">${p.inicio}</div>
+        <div class="tl-name">${p.nombre}</div>
+        <div class="tl-partido">${p.partido}</div>
+        <span class="tl-badge" style="color:${textColor}">${p.tag}</span>
+      </div>
+      <div class="tl-connector"></div>
+    ` : ''}
+    <div class="tl-dot"></div>
+    ${!isOdd ? `
+      <div class="tl-connector"></div>
+      <div class="tl-card" style="color:${p.color};">
+        <div class="tl-card-top"></div>
+        <span class="tl-emoji-card">${p.emoji}</span>
+        <div class="tl-year">${p.inicio}</div>
+        <div class="tl-name">${p.nombre}</div>
+        <div class="tl-partido">${p.partido}</div>
+        <span class="tl-badge" style="color:${textColor}">${p.tag}</span>
+      </div>
+    ` : ''}
+    <div class="tl-axis-year">${p.inicio}–${p.fin}</div>
+  `;
+
+  node.addEventListener('click', () => openModal(p));
+  track.appendChild(node);
+
+  // spacer between nodes
+  if (i < DATA.length - 1) {
+    const sp = document.createElement('div');
+    sp.style.cssText = 'width:60px;flex-shrink:0;';
+    track.appendChild(sp);
+  }
+});
+
+// ── MODAL ──
+function openModal(p) {
+  const textColor = p.color === '#F4A261' ? '#1a0a00' : '#fff';
+  document.getElementById('modalBody').innerHTML = `
+    <span class="m-tag" style="background:${p.color};color:${textColor}">${p.tag}</span>
+    <span class="m-emoji">${p.emoji}</span>
+    <div class="m-name" style="color:${p.color}">${p.nombre}</div>
+    <div class="m-period" style="color:${p.color}">📅 ${p.inicio} – ${p.fin}</div>
+    <div class="m-partido">🏛️ ${p.partido}</div>
+    <p class="m-desc">${p.desc}</p>
+    <div class="m-section" style="color:${p.color}">🏆 Logros y momentos clave</div>
+    <ul class="m-logros">
+      ${p.logros.map(l=>`<li style="border-color:${p.color}"><span class="ico">${l.ico}</span>${l.txt}</li>`).join('')}
+    </ul>
+    <div class="m-section" style="color:${p.color}">📊 En cifras</div>
+    <div class="m-datos">
+      ${p.datos.map(d=>`<div class="m-dato"><div class="dn" style="color:${p.color}">${d.n}</div><div class="dl">${d.l}</div></div>`).join('')}
+    </div>
+    <div class="m-cita" style="border-color:${p.color}">
+      ${p.cita}
+      <cite>— ${p.nombre}</cite>
+    </div>
+  `;
+  document.getElementById('overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+document.getElementById('closeBtn').addEventListener('click', close);
+document.getElementById('overlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('overlay')) close();
+});
+document.addEventListener('keydown', e => { if(e.key==='Escape') close(); });
+function close() {
+  document.getElementById('overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ── NAV ARROWS ──
+const scr = document.getElementById('tlScroll');
+document.getElementById('btnLeft').addEventListener('click', () => scr.scrollBy({left:-320,behavior:'smooth'}));
+document.getElementById('btnRight').addEventListener('click', () => scr.scrollBy({left:320,behavior:'smooth'}));
+
+// ── DRAG TO SCROLL ──
+let isDown=false,startX,scrollLeft;
+scr.addEventListener('mousedown',e=>{isDown=true;scr.style.cursor='grabbing';startX=e.pageX-scr.offsetLeft;scrollLeft=scr.scrollLeft;});
+scr.addEventListener('mouseleave',()=>{isDown=false;scr.style.cursor='grab';});
+scr.addEventListener('mouseup',()=>{isDown=false;scr.style.cursor='grab';});
+scr.addEventListener('mousemove',e=>{
+  if(!isDown)return;e.preventDefault();
+  const x=e.pageX-scr.offsetLeft;
+  scr.scrollLeft=scrollLeft-(x-startX)*1.5;
+});
+</script>
+</body>
+</html>
