@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Presidentes de Colombia – Línea del Tiempo 1990–2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:ital,wght@0,400;0,700;0,900;1,700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --am: #FCD116; /* amarillo */
+  --az: #003893; /* azul */
+  --ro: #CE1126; /* rojo */
+  --dk: #0a0400;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+
+body {
+  font-family:'Nunito',sans-serif;
+  background: var(--dk);
+  color: #fff;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* -- HERO -- */
+.hero {
+  position: relative;
+  text-align: center;
+  padding: 5rem 2rem 3rem;
+  background: var(--az);
+  overflow: hidden;
+}
+.hero-noise {
+  position:absolute;inset:0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity:.4;pointer-events:none;
+}
+.hero-flag-bar {
+  position:absolute;top:0;left:0;right:0;
+  height:8px;display:flex;
+}
+.hero-flag-bar span { display:block;height:100%; }
+.hero-flag-bar span:nth-child(1){ flex:2;background:var(--am); }
+.hero-flag-bar span:nth-child(2){ flex:1;background:var(--az); }
+.hero-flag-bar span:nth-child(3){ flex:1;background:var(--ro); }
+
+.hero-deco {
+  position:absolute;inset:0;pointer-events:none;overflow:hidden;
+}
+.hero-deco span {
+  position:absolute;border-radius:50%;
+}
+.hero-deco span:nth-child(1){
+  width:600px;height:600px;
+  background:radial-gradient(circle,var(--am),transparent 65%);
+  top:-220px;right:-180px;opacity:.08;
+  animation:spin 40s linear infinite;
+}
+.hero-deco span:nth-child(2){
+  width:400px;height:400px;
+  background:radial-gradient(circle,var(--ro),transparent 65%);
+  bottom:-160px;left:-120px;opacity:.07;
+  animation:spin 28s linear infinite reverse;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+.hero-emoji {
+  font-size:4.5rem;
+  display:block;margin-bottom:.8rem;
+  animation:float 3.5s ease-in-out infinite;
+  filter:drop-shadow(0 0 22px rgba(252,209,22,.65));
+  position:relative;z-index:2;
+}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-12px);}}
+
+.hero h1 {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(3rem,9vw,7.5rem);
+  color:var(--am);
+  line-height:.9;
+  text-shadow:4px 4px 0 var(--ro),9px 9px 0 rgba(0,0,0,.35);
+  position:relative;z-index:2;
+  animation:drop .9s cubic-bezier(.22,1,.36,1) both;
+}
+@keyframes drop{from{opacity:0;transform:translateY(-35px);}to{opacity:1;transform:none;}}
+
+.hero-sub {
+  font-size:clamp(.8rem,2vw,1.1rem);
+  font-weight:700;letter-spacing:.2em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,.75);
+  margin-top:.9rem;
+  position:relative;z-index:2;
+  animation:drop .9s .2s cubic-bezier(.22,1,.36,1) both;
+}
+.hero-hint {
+  color:rgba(255,255,255,.4);font-size:.82rem;margin-top:.5rem;
+  position:relative;z-index:2;
+  animation:drop .9s .35s cubic-bezier(.22,1,.36,1) both;
+}
+
+/* -- TIMELINE WRAPPER -- */
+.tl-outer {
+  position:relative;
+  padding: 4rem 0 5rem;
+  background: var(--dk);
+}
+
+/* Axis line */
+.tl-axis {
+  position:absolute;
+  top:50%;left:0;right:0;
+  height:6px;
+  transform:translateY(-50%);
+  background:linear-gradient(90deg,
+    var(--am) 0%,
+    var(--az) 50%,
+    var(--ro) 100%
+  );
+  z-index:0;
+}
+.tl-axis::before,.tl-axis::after{
+  content:'';position:absolute;top:50%;
+  width:0;height:0;
+  border-top:10px solid transparent;
+  border-bottom:10px solid transparent;
+  transform:translateY(-50%);
+}
+.tl-axis::after{
+  right:-2px;
+  border-left:16px solid var(--ro);
+}
+.tl-axis::before{
+  left:-2px;
+  border-right:16px solid var(--am);
+}
+
+/* Scroll container */
+.tl-scroll {
+  overflow-x:auto;
+  padding: 0 3rem;
+  cursor:grab;
+  scrollbar-width:thin;
+  scrollbar-color: var(--am) rgba(255,255,255,.1);
+}
+.tl-scroll:active{cursor:grabbing;}
+.tl-scroll::-webkit-scrollbar{height:5px;}
+.tl-scroll::-webkit-scrollbar-track{background:rgba(255,255,255,.08);border-radius:10px;}
+.tl-scroll::-webkit-scrollbar-thumb{background:var(--am);border-radius:10px;}
+
+.tl-track {
+  display:flex;
+  align-items:center;
+  min-width:max-content;
+  padding: 220px 80px;
+  gap:0;
+  position:relative;
+}
+
+/* -- NODE -- */
+.tl-node {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  position:relative;
+  width:180px;
+  flex-shrink:0;
+  cursor:pointer;
+}
+
+/* Card top (odd) / bottom (even) */
+.tl-node:nth-child(odd) .tl-card  { bottom:calc(100% + 30px); top:auto; }
+.tl-node:nth-child(even) .tl-card { top:calc(100% + 30px); bottom:auto; }
+.tl-node:nth-child(odd) .tl-connector  { bottom:100%; top:auto; transform-origin:bottom center; }
+.tl-node:nth-child(even) .tl-connector { top:100%; bottom:auto; transform-origin:top center; }
+
+/* Dot on axis */
+.tl-dot {
+  width:26px;height:26px;border-radius:50%;
+  border:4px solid var(--dk);
+  box-shadow:0 0 0 3px currentColor, 0 0 14px currentColor;
+  z-index:10;position:relative;
+  transition:transform .25s, box-shadow .25s;
+  flex-shrink:0;
+}
+.tl-node:hover .tl-dot {
+  transform:scale(1.5);
+  box-shadow:0 0 0 4px currentColor, 0 0 28px currentColor;
+}
+
+/* Connector stem */
+.tl-connector {
+  width:3px;height:55px;
+  background:currentColor;
+  opacity:.5;
+  position:relative;
+  z-index:1;
+}
+
+/* Card */
+.tl-card {
+  position:absolute;
+  width:170px;
+  background:#161010;
+  border-radius:14px;
+  padding:1rem;
+  border:2px solid currentColor;
+  transition:transform .25s, box-shadow .25s, background .25s;
+  z-index:5;
+}
+.tl-node:hover .tl-card {
+  background:#1f1515;
+  transform:scale(1.06);
+  box-shadow:0 8px 32px rgba(0,0,0,.5);
+}
+
+.tl-card-top {
+  height:5px;border-radius:10px 10px 0 0;
