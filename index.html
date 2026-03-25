@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🇨🇴 Presidentes de Colombia – Línea del Tiempo</title>
+<title>Presidentes de Colombia – Línea del Tiempo</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -255,8 +255,8 @@ footer p{font-size:.8rem;opacity:.5;margin-top:.3rem;}
 <div class="music-bar">
   <button class="music-btn" id="musicBtn">▶</button>
   <div class="music-info">
-    <div class="music-title">🎵 Música colombiana</div>
-    <div class="music-sub">Karol G · Cumbia · Vallenato</div>
+    <div class="music-title">🎵 Si Antes Te Hubiera Conocido</div>
+    <div class="music-sub">KAROL G · Coke Studio</div>
   </div>
   <div class="music-waves paused" id="musicWaves">
     <span></span><span></span><span></span><span></span>
@@ -607,31 +607,22 @@ scr.addEventListener('mouseleave',()=>isDown=false);
 scr.addEventListener('mouseup',()=>isDown=false);
 scr.addEventListener('mousemove',e=>{ if(!isDown)return; e.preventDefault(); scr.scrollLeft=scrollLeft-(e.pageX-scr.offsetLeft-startX)*1.4; });
 
-/* ── MUSIC ── */
-let ytReady=false,ytPlayer=null,isPlaying=false;
-const ytTag=document.createElement('script'); ytTag.src='https://www.youtube.com/iframe_api'; document.head.appendChild(ytTag);
-const ytDiv=document.createElement('div'); ytDiv.id='yt-player';
-ytDiv.style.cssText='position:fixed;bottom:-200px;left:-200px;width:1px;height:1px;opacity:0;pointer-events:none;';
-document.body.appendChild(ytDiv);
-window.onYouTubeIframeAPIReady=function(){
-  ytPlayer=new YT.Player('yt-player',{
-    height:'1',width:'1',videoId:'6YRXGU_h5-o',
-    playerVars:{autoplay:0,loop:1,playlist:'6YRXGU_h5-o',controls:0,disablekb:1,fs:0,iv_load_policy:3,modestbranding:1,rel:0},
-    events:{
-      onReady:()=>{ytReady=true;},
-      onStateChange:(e)=>{ if(e.data===YT.PlayerState.ENDED&&ytPlayer) ytPlayer.playVideo(); }
-    }
-  });
-};
-document.getElementById('musicBtn').addEventListener('click',()=>{
-  if(!ytReady){alert('⏳ Cargando música, intenta en un momento.');return;}
-  if(isPlaying){
-    ytPlayer.pauseVideo();isPlaying=false;
-    document.getElementById('musicBtn').textContent='▶';
+/* ── MUSIC (HTML5 Audio – fichier local) ── */
+const audio = new Audio('karol_g.mp4');
+audio.loop = true;
+audio.volume = 0.55;
+let isPlaying = false;
+
+document.getElementById('musicBtn').addEventListener('click', () => {
+  if (isPlaying) {
+    audio.pause();
+    isPlaying = false;
+    document.getElementById('musicBtn').textContent = '▶';
     document.getElementById('musicWaves').classList.add('paused');
   } else {
-    ytPlayer.playVideo();isPlaying=true;
-    document.getElementById('musicBtn').textContent='⏸';
+    audio.play().catch(() => {});
+    isPlaying = true;
+    document.getElementById('musicBtn').textContent = '⏸';
     document.getElementById('musicWaves').classList.remove('paused');
   }
 });
