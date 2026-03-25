@@ -3,149 +3,568 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Presidentes de Colombia – Línea del Tiempo 1990–2026</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:ital,wght@0,400;0,700;0,900;1,700&display=swap" rel="stylesheet">
+<title>🇨🇴 Presidentes de Colombia – Línea del Tiempo</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root {
-  --am: #FCD116;
-  --az: #003893;
-  --ro: #CE1126;
-  --dk: #0a0400;
+  --am:  #FCD116;
+  --az:  #003893;
+  --ro:  #CE1126;
+  --ve:  #17a84a;
+  --na:  #FF6D00;
+  --ci:  #00B4D8;
+  --li:  #9B5DE5;
+  --ro2: #F72585;
+  --bg:  #FFFDF5;
+  --card-bg: #ffffff;
+  --txt: #1a1200;
 }
+
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 html { scroll-behavior:smooth; }
+
 body {
-  font-family:'Nunito',sans-serif;
-  background: var(--dk);
-  color: #fff;
+  font-family:'Nunito', sans-serif;
+  background: var(--bg);
+  color: var(--txt);
   overflow-x: hidden;
-  min-height: 100vh;
 }
-/* HERO */
+
+/* ══ MUSIC PLAYER ══ */
+.music-bar {
+  position: fixed;
+  bottom: 1.2rem; right: 1.2rem;
+  z-index: 500;
+  background: white;
+  border-radius: 50px;
+  padding: .55rem 1.1rem .55rem .65rem;
+  box-shadow: 0 4px 24px rgba(0,0,0,.15);
+  display: flex; align-items: center; gap: .7rem;
+  border: 2.5px solid var(--am);
+  animation: popIn .6s 1s cubic-bezier(.34,1.56,.64,1) both;
+}
+@keyframes popIn{from{opacity:0;transform:scale(.5) translateY(30px);}to{opacity:1;transform:none;}}
+.music-icon {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--ro2), var(--li));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; cursor: pointer;
+  transition: transform .2s;
+  flex-shrink: 0;
+}
+.music-icon:hover { transform: scale(1.1); }
+.music-info { line-height: 1.2; }
+.music-title { font-size: .72rem; font-weight: 800; color: var(--txt); }
+.music-sub { font-size: .6rem; color: #999; font-weight: 600; }
+.music-waves {
+  display: flex; align-items: flex-end; gap: 2px; height: 16px;
+}
+.music-waves span {
+  display: block; width: 3px; background: var(--ro2);
+  border-radius: 2px; animation: wave 1s ease-in-out infinite;
+}
+.music-waves span:nth-child(2){ animation-delay:.15s; }
+.music-waves span:nth-child(3){ animation-delay:.3s; }
+.music-waves span:nth-child(4){ animation-delay:.45s; }
+.music-waves.paused span { animation-play-state: paused; height: 4px !important; }
+@keyframes wave{
+  0%,100%{ height:4px; }
+  50%{ height:14px; }
+}
+
+/* ══ HERO ══ */
 .hero {
   position: relative;
-  text-align: center;
-  padding: 5rem 2rem 3rem;
-  background: var(--az);
   overflow: hidden;
+  background: linear-gradient(150deg, var(--az) 0%, #0050cc 60%, #0033a0 100%);
+  padding: 5rem 2rem 4rem;
+  text-align: center;
 }
-.hero-emoji {
-  font-size:4.5rem;
-  display:block;
-  margin-bottom:.8rem;
+
+/* Confetti dots */
+.confetti-dot {
+  position: absolute; border-radius: 50%; pointer-events: none;
+  animation: drift linear infinite;
 }
+@keyframes drift {
+  0%  { transform: translateY(0) rotate(0deg); opacity:.8; }
+  100%{ transform: translateY(-120vh) rotate(360deg); opacity:0; }
+}
+
+.hero-flag-band {
+  position: absolute; top:0; left:0; right:0;
+  height: 12px; display: flex;
+}
+.hero-flag-band span { display:block; height:100%; }
+.hero-flag-band span:nth-child(1){ flex:2; background:var(--am); }
+.hero-flag-band span:nth-child(2){ flex:1; background:var(--az); }
+.hero-flag-band span:nth-child(3){ flex:1; background:var(--ro); }
+
+.hero-emoji-big {
+  font-size: 5rem; display:block;
+  animation: float 3s ease-in-out infinite;
+  filter: drop-shadow(0 6px 20px rgba(0,0,0,.3));
+  margin-bottom: 1rem; position:relative; z-index:2;
+}
+@keyframes float{ 0%,100%{transform:translateY(0);}50%{transform:translateY(-12px);} }
+
 .hero h1 {
-  font-family:'Bebas Neue',sans-serif;
-  font-size:clamp(3rem,9vw,7.5rem);
-  color:var(--am);
-  line-height:.9;
-  text-shadow:4px 4px 0 var(--ro),9px 9px 0 rgba(0,0,0,.35);
-  position:relative;z-index:2;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(3rem,9vw,8rem);
+  color: var(--am);
+  line-height: .88;
+  text-shadow: 4px 4px 0 var(--ro), 8px 8px 0 rgba(0,0,0,.25);
+  position:relative; z-index:2;
+  animation: dropIn .8s cubic-bezier(.22,1,.36,1) both;
 }
+@keyframes dropIn{ from{opacity:0;transform:translateY(-30px) scale(.95);}to{opacity:1;transform:none;} }
+
 .hero-sub {
-  font-size:1rem;
-  font-weight:700;
-  letter-spacing:.2em;
-  text-transform:uppercase;
-  color:rgba(255,255,255,.75);
-  margin-top:.9rem;
+  font-family:'Fredoka', sans-serif;
+  font-size: clamp(1rem,2.5vw,1.4rem);
+  color: rgba(255,255,255,.9);
+  margin-top: .8rem; font-weight:600; letter-spacing:.05em;
+  position:relative; z-index:2;
+  animation: dropIn .8s .18s cubic-bezier(.22,1,.36,1) both;
 }
 .hero-hint {
-  font-size:.82rem;
-  margin-top:.5rem;
-  color:rgba(255,255,255,.4);
+  color: rgba(255,255,255,.5); font-size:.82rem; margin-top:.5rem;
+  position:relative; z-index:2;
+  animation: dropIn .8s .3s cubic-bezier(.22,1,.36,1) both;
 }
 
-/* TIMELINE */
-.tl-outer { position:relative; padding: 4rem 0 5rem; background: var(--dk); }
-.tl-axis {
-  position:absolute;
-  top:50%;left:0;right:0;
-  height:6px;
-  transform:translateY(-50%);
-  background:linear-gradient(90deg,var(--am) 0%,var(--az) 50%,var(--ro) 100%);
+/* wave bottom */
+.hero-wave {
+  position: absolute; bottom:-2px; left:0; right:0;
+  height: 60px;
+}
+.hero-wave svg { width:100%; height:100%; }
+
+/* ══ VOCAB LEGEND ══ */
+.vocab-legend {
+  background: white;
+  border-bottom: 3px dashed rgba(0,56,147,.12);
+  padding: 1rem 2rem;
+  display: flex; flex-wrap:wrap; gap:.55rem; justify-content:center;
+  align-items: center;
+}
+.vocab-legend-label {
+  font-size:.72rem; font-weight:800; letter-spacing:.15em;
+  text-transform:uppercase; color:#aaa; margin-right:.3rem;
+}
+.vchip {
+  display:inline-flex; align-items:center; gap:.3rem;
+  padding:.28rem .7rem; border-radius:100px;
+  font-size:.7rem; font-weight:800;
+  letter-spacing:.08em; text-transform:uppercase;
+  color:white; white-space:nowrap;
+}
+
+/* ══ TIMELINE SECTION ══ */
+.tl-section {
+  padding: 2rem 0 3rem;
+  background: var(--bg);
+  position: relative;
+}
+
+.tl-section-title {
+  text-align:center; margin-bottom: 1.5rem;
+}
+.tl-section-title h2 {
+  font-family:'Bebas Neue',sans-serif;
+  font-size: clamp(2rem,5vw,3.8rem);
+  color: var(--az);
+}
+.tl-section-title h2 span { color:var(--ro); }
+.tl-section-title p {
+  font-size:.82rem; font-weight:700;
+  letter-spacing:.15em; text-transform:uppercase;
+  color:#bbb; margin-top:.3rem;
+}
+
+/* arrows */
+.tl-nav {
+  display:flex; justify-content:center; gap:.8rem; align-items:center;
+  margin-bottom: 1.2rem;
+}
+.tl-btn {
+  background: white;
+  border: 2.5px solid var(--az);
+  color: var(--az); border-radius: 50%;
+  width: 42px; height: 42px; font-size: 1.1rem;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(0,56,147,.15);
+  transition: all .2s;
+  display:flex; align-items:center; justify-content:center;
+}
+.tl-btn:hover { background:var(--az);color:white;transform:scale(1.1); }
+
+/* scroll wrapper */
+.tl-scroll {
+  overflow-x: auto;
+  padding: 0 3rem 1rem;
+  cursor: grab;
+  scrollbar-width: thin;
+  scrollbar-color: var(--am) #e8e0cc;
+}
+.tl-scroll:active{ cursor:grabbing; }
+.tl-scroll::-webkit-scrollbar{ height:6px; }
+.tl-scroll::-webkit-scrollbar-track{ background:#f0e8d0;border-radius:10px; }
+.tl-scroll::-webkit-scrollbar-thumb{ background:var(--am);border-radius:10px; }
+
+/* track */
+.tl-track {
+  display:flex; align-items:center;
+  min-width:max-content;
+  padding: 220px 80px;
+  position:relative;
+}
+
+/* axis line */
+.tl-track::before {
+  content:'';
+  position:absolute; top:50%; left:0; right:0;
+  height:8px; transform:translateY(-50%);
+  background: linear-gradient(90deg,
+    var(--ro) 0%,    var(--ro) 14.2%,
+    var(--ci) 14.2%, var(--ci) 28.5%,
+    var(--az) 28.5%, var(--az) 42.8%,
+    var(--am) 42.8%, var(--am) 57.1%,
+    var(--na) 57.1%, var(--na) 71.4%,
+    var(--ve) 71.4%, var(--ve) 85.7%,
+    var(--li) 85.7%, var(--li) 100%
+  );
+  border-radius: 4px;
   z-index:0;
 }
-.tl-scroll { overflow-x:auto; padding: 0 3rem; cursor:grab; scrollbar-width:thin; scrollbar-color: var(--am) rgba(255,255,255,.1);}
-.tl-scroll:active{cursor:grabbing;}
-.tl-scroll::-webkit-scrollbar{height:5px;}
-.tl-scroll::-webkit-scrollbar-track{background:rgba(255,255,255,.08);border-radius:10px;}
-.tl-scroll::-webkit-scrollbar-thumb{background:var(--am);border-radius:10px;}
-.tl-track { display:flex; align-items:center; min-width:max-content; padding: 220px 80px; gap:0; position:relative; }
-.tl-node { display:flex; flex-direction:column; align-items:center; position:relative; width:180px; flex-shrink:0; cursor:pointer; }
-.tl-dot { width:26px;height:26px;border-radius:50%; border:4px solid var(--dk); box-shadow:0 0 0 3px currentColor,0 0 14px currentColor; z-index:10; position:relative; transition:transform .25s, box-shadow .25s; flex-shrink:0;}
-.tl-node:hover .tl-dot { transform:scale(1.5); box-shadow:0 0 0 4px currentColor,0 0 28px currentColor;}
-.tl-connector { width:3px;height:55px; background:currentColor; opacity:.5; position:relative; z-index:1;}
-.tl-card { position:absolute; width:170px; background:#161010; border-radius:14px; padding:1rem; border:2px solid currentColor; transition:transform .25s, box-shadow .25s, background .25s; z-index:5; }
-.tl-card-top { height:5px;border-radius:10px 10px 0 0; margin:-1rem -1rem .8rem; background:currentColor;}
-.tl-year { font-family:'Bebas Neue',sans-serif; font-size:1.7rem; color:currentColor; }
-.tl-name { font-size:.75rem;font-weight:900; line-height:1.3;margin:.3rem 0 .2rem;color:#fff; }
-.tl-partido { font-size:.62rem;font-weight:700;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.08em; }
-.tl-badge { display:inline-block;margin-top:.5rem; font-size:.58rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:.1rem .45rem;border-radius:100px; background:currentColor;color:var(--dk);}
-.tl-axis-year { position:absolute; bottom:-38px; font-family:'Bebas Neue',sans-serif; font-size:1.1rem;color:rgba(255,255,255,.3); white-space:nowrap;}
 
-/* MODAL */
-.overlay { position:fixed; inset:0; background:rgba(0,0,0,.85); display:flex; align-items:center; justify-content:center; padding:1rem; opacity:0; pointer-events:none; transition:opacity .3s; backdrop-filter:blur(10px);}
-.overlay.open{opacity:1; pointer-events:all;}
-.modal { background:#130c05; border-radius:24px; max-width:660px;width:100%; max-height:90vh; overflow-y:auto; transform:scale(.82) translateY(40px); transition:transform .38s cubic-bezier(.22,1,.36,1); position:relative; border:1px solid rgba(255,255,255,.1);}
-.overlay.open .modal{transform:scale(1) translateY(0);}
-.modal-banner { height:12px;border-radius:24px 24px 0 0; display:flex; overflow:hidden; }
-.modal-banner span:nth-child(1){flex:2;background:var(--am);}
-.modal-banner span:nth-child(2){flex:1;background:var(--az);}
-.modal-banner span:nth-child(3){flex:1;background:var(--ro);}
-.modal-body { padding:2rem 2.2rem 2.5rem; }
-.m-tag { display:inline-block;font-size:.68rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;padding:.13rem .6rem;margin-bottom:.9rem;}
-.m-emoji{font-size:3.5rem;display:block;margin-bottom:.5rem;}
-.m-name { font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,5vw,3.2rem);line-height:1;color:#fff;}
-.m-period{font-size:.85rem;font-weight:700;letter-spacing:.08em;margin:.4rem 0 .15rem;}
-.m-partido{font-size:.8rem;color:rgba(255,255,255,.4);margin-bottom:1.2rem;}
-.m-section{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;margin-bottom:.8rem;letter-spacing:.04em;}
-.m-logros{list-style:none; display:flex; flex-direction:column; gap:.6rem;margin-bottom:1.5rem;}
-.m-logros li{ background:rgba(255,255,255,.05); border-radius:12px; padding:.75rem 1rem; font-size:.88rem; display:flex; gap:.7rem; align-items:flex-start; border-left:3px solid transparent; color:rgba(255,255,255,.8);}
-.m-logros li .ico{flex-shrink:0;font-size:1.1rem;}
-.m-datos{ display:grid; grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); gap:.7rem;margin-bottom:1.5rem;}
-.m-dato{ background:rgba(255,255,255,.05); border-radius:12px; padding:.8rem; text-align:center;}
-.m-dato .dn{ font-family:'Bebas Neue',sans-serif; font-size:2rem;line-height:1;}
-.m-dato .dl{ font-size:.65rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-top:.2rem;}
-.m-cita{display:none;}
-.close-btn{position:absolute;top:1.4rem;right:1.4rem;background:rgba(255,255,255,.1);border:none;border-radius:50%;width:40px;height:40px;font-size:1.1rem;font-weight:900;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s,transform .2s;z-index:2;}
-.close-btn:hover{background:rgba(255,255,255,.2);transform:scale(1.1) rotate(90deg);}
+/* ── NODE ── */
+.tl-node {
+  display:flex; flex-direction:column; align-items:center;
+  position:relative; width:190px; flex-shrink:0;
+  cursor:pointer;
+}
 
-/* FOOTER */
-footer{ background:var(--az); color:#fff; text-align:center; padding:2.5rem 1.5rem;}
-.f-flag{ display:flex; justify-content:center; margin-bottom:.9rem; }
-.f-flag span{height:8px;display:block;}
-.f-flag span:nth-child(1){width:110px;background:var(--am);}
-.f-flag span:nth-child(2){width:55px;background:var(--az);}
-.f-flag span:nth-child(3){width:55px;background:var(--ro);}
-footer h3{ font-family:'Bebas Neue',sans-serif; font-size:2rem;color:var(--am); letter-spacing:.1em;}
-footer p{ font-size:.78rem; opacity:.5;margin-top:.3rem;}
+/* dot */
+.tl-dot {
+  width:28px; height:28px; border-radius:50%;
+  background:white;
+  border:5px solid currentColor;
+  box-shadow: 0 0 0 3px white, 0 4px 14px rgba(0,0,0,.18);
+  z-index:10; position:relative; flex-shrink:0;
+  transition: transform .25s, box-shadow .25s;
+}
+.tl-node:hover .tl-dot {
+  transform:scale(1.5);
+  box-shadow: 0 0 0 4px white, 0 6px 22px rgba(0,0,0,.22);
+}
+
+/* stem */
+.tl-stem {
+  width:4px; height:60px;
+  background:currentColor; opacity:.45;
+  position:relative; z-index:1;
+  border-radius:2px;
+}
+
+/* card */
+.tl-card {
+  position:absolute;
+  width:182px;
+  background: white;
+  border-radius:18px;
+  padding:1rem 1.1rem 1rem;
+  box-shadow: 0 4px 22px rgba(0,0,0,.1), 0 1px 4px rgba(0,0,0,.06);
+  border-top: 6px solid currentColor;
+  transition:transform .25s, box-shadow .25s;
+  z-index:5; cursor:pointer;
+}
+.tl-node:hover .tl-card {
+  transform:scale(1.07) translateY(-4px);
+  box-shadow: 0 12px 36px rgba(0,0,0,.15);
+}
+
+/* card top/bottom alternating */
+.tl-node:nth-child(odd)  .tl-card { bottom:calc(100% + 28px); top:auto; }
+.tl-node:nth-child(even) .tl-card { top:calc(100% + 28px); bottom:auto; }
+.tl-node:nth-child(odd)  .tl-stem { order:-1; }
+.tl-node:nth-child(even) .tl-stem { order:1; }
+.tl-node:nth-child(odd)  { flex-direction:column-reverse; }
+.tl-node:nth-child(even) { flex-direction:column; }
+
+.tl-emoji { font-size:1.6rem; display:block; margin-bottom:.25rem; }
+.tl-year {
+  font-family:'Bebas Neue', sans-serif;
+  font-size: 2rem; line-height:1;
+  color:currentColor;
+}
+.tl-name {
+  font-size:.72rem; font-weight:900;
+  line-height:1.3; margin:.25rem 0 .35rem;
+  color:var(--txt);
+}
+
+/* keyword pills */
+.tl-pills {
+  display:flex; flex-wrap:wrap; gap:.28rem;
+  margin-top:.4rem;
+}
+.tl-pill {
+  font-family:'Fredoka', sans-serif;
+  font-size:.63rem; font-weight:600;
+  padding:.18rem .5rem;
+  border-radius:100px;
+  border:2px solid currentColor;
+  color:currentColor;
+  background:transparent;
+  white-space:nowrap;
+  transition:background .2s, color .2s;
+}
+.tl-node:hover .tl-pill {
+  background:currentColor;
+  color:white;
+}
+
+/* click hint */
+.tl-hint {
+  font-size:.58rem; font-weight:700; letter-spacing:.1em;
+  text-transform:uppercase; color:#bbb;
+  margin-top:.5rem;
+}
+
+/* axis year label */
+.tl-axis-year {
+  position:absolute; bottom:-40px;
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.05rem; color:#ccc;
+  white-space:nowrap;
+}
+
+/* spacer between nodes */
+.tl-spacer { width:55px; flex-shrink:0; }
+
+/* ══ MODAL ══ */
+.overlay {
+  position:fixed; inset:0;
+  background:rgba(0,30,80,.7);
+  z-index:1000;
+  display:flex; align-items:center; justify-content:center;
+  padding:1rem;
+  opacity:0; pointer-events:none;
+  transition:opacity .3s;
+  backdrop-filter:blur(8px);
+}
+.overlay.open { opacity:1; pointer-events:all; }
+
+.modal {
+  background: white;
+  border-radius:28px;
+  max-width:660px; width:100%;
+  max-height:90vh; overflow-y:auto;
+  transform:scale(.82) translateY(40px);
+  transition:transform .38s cubic-bezier(.22,1,.36,1);
+  position:relative;
+  box-shadow: 0 24px 80px rgba(0,0,0,.3);
+  scrollbar-width:thin;
+}
+.overlay.open .modal { transform:scale(1) translateY(0); }
+
+.modal-top-stripe {
+  height:14px; border-radius:28px 28px 0 0;
+  display:flex; overflow:hidden;
+}
+.modal-top-stripe span { display:block; height:100%; }
+.modal-top-stripe span:nth-child(1){ flex:2; background:var(--am); }
+.modal-top-stripe span:nth-child(2){ flex:1; background:var(--az); }
+.modal-top-stripe span:nth-child(3){ flex:1; background:var(--ro); }
+
+.modal-inner { padding:2rem 2.2rem 2.5rem; }
+
+.m-tag {
+  display:inline-block; font-size:.68rem; font-weight:800;
+  letter-spacing:.14em; text-transform:uppercase;
+  padding:.15rem .65rem; border-radius:100px; color:white;
+  margin-bottom:.9rem;
+}
+.m-emoji-big { font-size:3.8rem; display:block; margin-bottom:.4rem; }
+.m-year {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(3rem,7vw,5rem);
+  line-height:1;
+}
+.m-name {
+  font-family:'Fredoka',sans-serif;
+  font-size:clamp(1.4rem,3.5vw,2rem);
+  font-weight:700; line-height:1.2;
+  margin:.3rem 0 .2rem;
+}
+.m-period { font-size:.85rem; font-weight:700; letter-spacing:.08em; opacity:.7; margin-bottom:.15rem; }
+.m-partido { font-size:.8rem; color:#aaa; margin-bottom:1.2rem; font-weight:600; }
+.m-desc { font-size:.95rem; line-height:1.85; color:#444; margin-bottom:1.5rem; }
+
+/* vocab block in modal */
+.m-vocab-block {
+  background: linear-gradient(135deg,#fffbf0,#fff5e0);
+  border-radius:16px; padding:1.2rem;
+  margin-bottom:1.5rem;
+  border:2px dashed rgba(0,56,147,.15);
+}
+.m-vocab-header {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.3rem; color:var(--az);
+  margin-bottom:.9rem; display:flex; align-items:center; gap:.5rem;
+}
+.m-vocab-grid { display:flex; flex-wrap:wrap; gap:.5rem; }
+.m-vocab-pill {
+  display:flex; flex-direction:column; align-items:center;
+  padding:.5rem .85rem; border-radius:14px;
+  border:2.5px solid;
+  min-width:90px; text-align:center;
+  transition:transform .2s;
+}
+.m-vocab-pill:hover { transform:scale(1.05); }
+.m-vocab-word {
+  font-family:'Fredoka',sans-serif;
+  font-size:.88rem; font-weight:700; line-height:1.2;
+}
+.m-vocab-def {
+  font-size:.6rem; font-weight:700; color:#999;
+  margin-top:.15rem; text-transform:uppercase; letter-spacing:.07em;
+}
+
+.m-section {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.3rem; margin-bottom:.8rem;
+  display:flex; align-items:center; gap:.4rem;
+}
+.m-logros { list-style:none; display:flex; flex-direction:column; gap:.6rem; margin-bottom:1.5rem; }
+.m-logros li {
+  background:#f8f8f8; border-radius:12px;
+  padding:.75rem 1rem;
+  font-size:.88rem; line-height:1.6;
+  display:flex; gap:.7rem; align-items:flex-start;
+  border-left:4px solid transparent; color:#333;
+}
+.m-logros li .ico { flex-shrink:0; font-size:1.1rem; }
+
+.m-datos {
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(130px,1fr));
+  gap:.7rem; margin-bottom:1.5rem;
+}
+.m-dato {
+  background:#f8f8f8; border-radius:12px;
+  padding:.85rem; text-align:center;
+  border-bottom:3px solid transparent;
+}
+.m-dato .dn {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:2rem; line-height:1;
+}
+.m-dato .dl { font-size:.65rem; font-weight:800; letter-spacing:.12em; text-transform:uppercase; color:#bbb; margin-top:.2rem; }
+
+.m-cita {
+  border-left:5px solid;
+  border-radius:0 14px 14px 0;
+  background:#fffdf5;
+  padding:1rem 1.2rem;
+  font-style:italic; font-size:.92rem;
+  color:#666; line-height:1.75;
+}
+.m-cita cite { display:block; margin-top:.5rem; font-style:normal; font-size:.72rem; font-weight:800; letter-spacing:.12em; text-transform:uppercase; color:#ccc; }
+
+.close-btn {
+  position:absolute; top:1.4rem; right:1.4rem;
+  background:#f2f2f2; border:none; border-radius:50%;
+  width:40px; height:40px; font-size:1.1rem; font-weight:900;
+  cursor:pointer; display:flex; align-items:center; justify-content:center;
+  transition:background .2s, transform .2s; z-index:2;
+}
+.close-btn:hover { background:#e0e0e0; transform:scale(1.1) rotate(90deg); }
+
+/* ══ FOOTER ══ */
+footer {
+  background: linear-gradient(135deg, var(--az), #0050cc);
+  color: white; text-align:center; padding:3rem 1.5rem;
+}
+.f-flag { display:flex; justify-content:center; margin-bottom:1rem; }
+.f-flag span { height:10px; display:block; }
+.f-flag span:nth-child(1){ width:120px; background:var(--am); }
+.f-flag span:nth-child(2){ width:60px; background:var(--az); }
+.f-flag span:nth-child(3){ width:60px; background:var(--ro); }
+footer h3 { font-family:'Bebas Neue',sans-serif; font-size:2.2rem; color:var(--am); letter-spacing:.1em; }
+footer p { font-size:.82rem; opacity:.5; margin-top:.3rem; }
+
+/* Responsive */
+@media(max-width:600px){
+  .m-vocab-grid { gap:.4rem; }
+  .m-datos { grid-template-columns:1fr 1fr; }
+}
 </style>
 </head>
 <body>
 
-<!-- HERO -->
-<header class="hero">
-  <span class="hero-emoji">🇨🇴</span>
-  <h1>PRESIDENTES<br>DE COLOMBIA</h1>
-  <p class="hero-sub">✦ Línea del Tiempo 1990 – 2026 ✦</p>
-  <p class="hero-hint">Arrastra la frise · Haz clic en cada presidente</p>
-</header>
-
-<!-- TIMELINE -->
-<div class="tl-outer">
-  <div class="tl-axis"></div>
-  <div class="tl-scroll" id="tlScroll">
-    <div class="tl-track" id="tlTrack"></div>
+<!-- MUSIC PLAYER -->
+<div class="music-bar" id="musicBar">
+  <div class="music-icon" id="musicBtn" title="Reproducir / Pausar">▶</div>
+  <div class="music-info">
+    <div class="music-title">🎵 Música colombiana</div>
+    <div class="music-sub">Karol G · Cumbia · Vallenato</div>
+  </div>
+  <div class="music-waves paused" id="musicWaves">
+    <span style="height:6px"></span>
+    <span style="height:10px"></span>
+    <span style="height:14px"></span>
+    <span style="height:8px"></span>
   </div>
 </div>
 
+<!-- HERO -->
+<header class="hero" id="heroEl">
+  <div class="hero-flag-band"><span></span><span></span><span></span></div>
+  <span class="hero-emoji-big">🇨🇴</span>
+  <h1>PRESIDENTES<br>DE COLOMBIA</h1>
+  <p class="hero-sub">✦ Línea del Tiempo 1990 – 2026 ✦ Vocabulario A2/B1</p>
+  <p class="hero-hint">Haz clic en cada presidente · Aprende palabras clave en español</p>
+  <svg class="hero-wave" viewBox="0 0 1440 60" preserveAspectRatio="none">
+    <path d="M0,30 C360,60 1080,0 1440,30 L1440,60 L0,60 Z" fill="#FFFDF5"/>
+  </svg>
+</header>
+
+<!-- VOCAB LEGEND -->
+<div class="vocab-legend">
+  <span class="vocab-legend-label">Categorías:</span>
+  <span class="vchip" style="background:#CE1126">🏛️ Política</span>
+  <span class="vchip" style="background:#003893">💰 Economía</span>
+  <span class="vchip" style="background:#9B5DE5">⚔️ Conflicto</span>
+  <span class="vchip" style="background:#17a84a">🌿 Sociedad</span>
+  <span class="vchip" style="background:#FF6D00">🕊️ Paz</span>
+  <span class="vchip" style="background:#00B4D8">🌎 Internacional</span>
+</div>
+
+<!-- TIMELINE SECTION -->
+<section class="tl-section">
+  <div class="tl-section-title">
+    <h2>Los <span>Presidentes</span> Modernos</h2>
+    <p>↔ Arrastra · Haz clic para explorar</p>
+  </div>
+
+  <div class="tl-nav">
+    <button class="tl-btn" id="btnLeft">◀</button>
+    <span style="font-size:.75rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:#bbb;">Navegar</span>
+    <button class="tl-btn" id="btnRight">▶</button>
+  </div>
+
+  <div class="tl-scroll" id="tlScroll">
+    <div class="tl-track" id="tlTrack"></div>
+  </div>
+</section>
+
 <!-- MODAL -->
 <div class="overlay" id="overlay">
-  <div class="modal" id="modal">
-    <div class="modal-banner"><span></span><span></span><span></span></div>
+  <div class="modal">
+    <div class="modal-top-stripe"><span></span><span></span><span></span></div>
     <button class="close-btn" id="closeBtn">✕</button>
-    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-inner" id="modalInner"></div>
   </div>
 </div>
 
@@ -153,60 +572,371 @@ footer p{ font-size:.78rem; opacity:.5;margin-top:.3rem;}
 <footer>
   <div class="f-flag"><span></span><span></span><span></span></div>
   <h3>¡Viva Colombia!</h3>
-  <p>Línea del Tiempo Interactiva · Presidentes 1990–2026</p>
+  <p>Línea del Tiempo · Presidentes 1990–2026 · Vocabulario A2/B1</p>
 </footer>
 
 <script>
-const DATA = [
-  {nombre:"César Gaviria",inicio:1990,fin:1994,partido:"Liberal",tag:"Liberal",color:"#FCD116",emoji:"🗳️",desc:"Palabras clave: gobierno, paz, política, carta, ley",logros:[{ico:"📜",txt:"Constitución"},{ico:"💰",txt:"Economía"},{ico:"⚖️",txt:"Justicia"}],datos:[{n:"1991",l:"Constitución"},{n:"4",l:"Años"},{n:"Medellín",l:"Cartel"}],cita:""}
-  ,{nombre:"Ernesto Samper",inicio:1994,fin:1998,partido:"Liberal",tag:"Liberal",color:"#003893",emoji:"⚠️",desc:"Palabras clave: escándalo, dinero, campaña",logros:[{ico:"⚖️",txt:"Proceso 8.000"},{ico:"🌍",txt:"EEUU"}],datos:[{n:"8.000",l:"Proceso"},{n:"4",l:"Años"}],cita:""}
-  ,{nombre:"Andrés Pastrana",inicio:1998,fin:2002,partido:"Conservador",tag:"Conservador",color:"#CE1126",emoji:"🕊️",desc:"Palabras clave: paz, FARC, negociación",logros:[{ico:"🕊️",txt:"Caguán"},{ico:"🇺🇸",txt:"Plan Colombia"}],datos:[{n:"42.000",l:"km²"},{n:"4",l:"Años"}],cita:""}
-  ,{nombre:"Álvaro Uribe",inicio:2002,fin:2010,partido:"Uribismo",tag:"Uribismo",color:"#FCD116",emoji:"⚔️",desc:"Palabras clave: seguridad, guerrilla, operación",logros:[{ico:"⚔️",txt:"Seguridad"},{ico:"🎖️",txt:"Rescate"}],datos:[{n:"8",l:"Años"},{n:"90%",l:"Reducción"}],cita:""}
-  ,{nombre:"Juan Manuel Santos",inicio:2010,fin:2018,partido:"Centro",tag:"Centro",color:"#003893",emoji:"🏆",desc:"Palabras clave: paz, Nobel, acuerdo",logros:[{ico:"🕊️",txt:"Acuerdo"},{ico:"🏆",txt:"Premio"}],datos:[{n:"8",l:"Años"},{n:"2016",l:"Nobel"}],cita:""}
-  ,{nombre:"Iván Duque",inicio:2018,fin:2022,partido:"Centro Democrático",tag:"Centro",color:"#CE1126",emoji:"😷",desc:"Palabras clave: pandemia, protesta, migrantes",logros:[{ico:"😷",txt:"COVID"},{ico:"✊",txt:"Paro"}],datos:[{n:"41",l:"Edad"},{n:"1.8M",l:"Migrantes"}],cita:""}
-  ,{nombre:"Gustavo Petro",inicio:2022,fin:2026,partido:"Izquierda",tag:"Izquierda",color:"#FCD116",emoji:"🌹",desc:"Palabras clave: izquierda, paz, reformas",logros:[{ico:"🌹",txt:"Histórico"},{ico:"👩🏿",txt:"Vice"}],datos:[{n:"50.4%",l:"Votos"},{n:"2022",l:"Elección"}],cita:""}
+/* ── DATA ── */
+const PRES = [
+  {
+    nombre:"César Gaviria",
+    inicio:1990, fin:1994,
+    partido:"Partido Liberal",
+    tag:"Liberal", tagColor:"#E63946",
+    color:"#E63946",
+    emoji:"🗳️",
+    desc:"César Gaviria llegó al poder en uno de los momentos más violentos de la historia colombiana. Su gran logro fue impulsar la nueva Constitución de 1991 y abrir la economía al mundo. También fue el presidente durante la caída del famoso narcotraficante Pablo Escobar.",
+    vocab:[
+      {word:"la constitución",  def:"fundamental law",   bg:"#CE1126"},
+      {word:"la apertura",      def:"opening / reform",  bg:"#003893"},
+      {word:"el narcotráfico",  def:"drug trafficking",  bg:"#9B5DE5"},
+      {word:"los derechos",     def:"rights",            bg:"#CE1126"},
+      {word:"la reforma",       def:"change / reform",   bg:"#CE1126"},
+      {word:"el comercio",      def:"trade / commerce",  bg:"#003893"},
+    ],
+    pills:["constitución","apertura","narco"],
+    logros:[
+      {ico:"📜",txt:"Constitución de 1991: nuevos derechos y libertades para todos los colombianos."},
+      {ico:"💹",txt:"Apertura económica: Colombia empieza a comerciar con el mundo."},
+      {ico:"💥",txt:"Muerte de Pablo Escobar (1993) y fin del Cartel de Medellín."},
+      {ico:"🏛️",txt:"Creó la Fiscalía General de la Nación."},
+    ],
+    datos:[{n:"1991",l:"Constitución",c:"#CE1126"},{n:"4",l:"Años",c:"#003893"},{n:"Medellín",l:"Cartel caído",c:"#9B5DE5"}],
+    cita:"\"La Constitución del 91 fue nuestra refundación como nación.\""
+  },
+  {
+    nombre:"Ernesto Samper",
+    inicio:1994, fin:1998,
+    partido:"Partido Liberal",
+    tag:"Liberal", tagColor:"#00B4D8",
+    color:"#00B4D8",
+    emoji:"⚠️",
+    desc:"El gobierno de Samper estuvo marcado por el escándalo del 'Proceso 8.000': su campaña recibió dinero del Cartel de Cali. EE.UU. suspendió su cooperación con Colombia. Samper fue absuelto por el Congreso pero su imagen quedó muy dañada.",
+    vocab:[
+      {word:"el escándalo",     def:"scandal",           bg:"#CE1126"},
+      {word:"la corrupción",    def:"corruption",        bg:"#CE1126"},
+      {word:"la campaña",       def:"election campaign", bg:"#CE1126"},
+      {word:"la pobreza",       def:"poverty",           bg:"#17a84a"},
+      {word:"la crisis",        def:"crisis",            bg:"#003893"},
+      {word:"la extradición",   def:"extradition",       bg:"#00B4D8"},
+    ],
+    pills:["corrupción","crisis","pobreza"],
+    logros:[
+      {ico:"⚠️",txt:"Proceso 8.000: acusado de recibir dinero del narcotráfico para su campaña."},
+      {ico:"🌍",txt:"EE.UU. descertificó a Colombia dos años seguidos."},
+      {ico:"👷",txt:"'El Salto Social': programas sociales para los más pobres."},
+      {ico:"⚖️",txt:"Desmantelamiento del Cartel de Cali."},
+    ],
+    datos:[{n:"8.000",l:"Proceso",c:"#CE1126"},{n:"4",l:"Años",c:"#003893"},{n:"1996",l:"Descertif.",c:"#00B4D8"}],
+    cita:"\"Entré con el corazón y los votos del pueblo colombiano.\""
+  },
+  {
+    nombre:"Andrés Pastrana",
+    inicio:1998, fin:2002,
+    partido:"Partido Conservador",
+    tag:"Conservador", tagColor:"#003893",
+    color:"#003893",
+    emoji:"🕊️",
+    desc:"Pastrana quiso terminar la guerra con las FARC. Creó una gran 'zona de distensión' en El Caguán para negociar la paz. Las negociaciones fracasaron en 2002, pero también logró el Plan Colombia con EE.UU. para luchar contra el narcotráfico.",
+    vocab:[
+      {word:"la guerrilla",     def:"guerrilla / rebels",bg:"#9B5DE5"},
+      {word:"la paz",           def:"peace",             bg:"#FF6D00"},
+      {word:"negociar",         def:"to negotiate",      bg:"#FF6D00"},
+      {word:"la zona",          def:"zone / area",       bg:"#FF6D00"},
+      {word:"el conflicto",     def:"conflict / war",    bg:"#9B5DE5"},
+      {word:"el acuerdo",       def:"agreement / deal",  bg:"#FF6D00"},
+    ],
+    pills:["paz","guerrilla","negociar"],
+    logros:[
+      {ico:"🕊️",txt:"Zona de distensión del Caguán: 42.000 km² para negociar con las FARC."},
+      {ico:"🇺🇸",txt:"Plan Colombia: 1.300 millones de dólares para luchar contra el narcotráfico."},
+      {ico:"📉",txt:"Crisis económica de 1999: el desempleo superó el 20%."},
+      {ico:"✈️",txt:"Reactivó la extradición de narcotraficantes a EE.UU."},
+    ],
+    datos:[{n:"42.000",l:"km² zona paz",c:"#FF6D00"},{n:"1.300M",l:"USD EE.UU.",c:"#003893"},{n:"4",l:"Años",c:"#003893"}],
+    cita:"\"Le aposté a la paz porque Colombia merece vivir sin guerra.\""
+  },
+  {
+    nombre:"Álvaro Uribe",
+    inicio:2002, fin:2010,
+    partido:"Partido de la U",
+    tag:"Uribismo", tagColor:"#CE1126",
+    color:"#CE1126",
+    emoji:"⚔️",
+    desc:"Uribe fue el presidente más popular de la historia reciente. Con su 'Política de Seguridad Democrática' recuperó el control del territorio, redujo los secuestros en un 90% y golpeó muy fuerte a las FARC. Gobernó 8 años gracias a una reelección.",
+    vocab:[
+      {word:"la seguridad",     def:"security / safety", bg:"#CE1126"},
+      {word:"el secuestro",     def:"kidnapping",        bg:"#9B5DE5"},
+      {word:"la guerrilla",     def:"guerrilla / rebels",bg:"#9B5DE5"},
+      {word:"reelegir",         def:"to re-elect",       bg:"#CE1126"},
+      {word:"el territorio",    def:"territory",         bg:"#CE1126"},
+      {word:"crecer",           def:"to grow",           bg:"#003893"},
+    ],
+    pills:["seguridad","secuestro","reelección"],
+    logros:[
+      {ico:"⚔️",txt:"Seguridad Democrática: -40% homicidios, -90% secuestros en 8 años."},
+      {ico:"🎖️",txt:"Operación Jaque (2008): rescate de Ingrid Betancourt sin disparar un tiro."},
+      {ico:"📈",txt:"El PIB creció de 98.000 a 234.000 millones de dólares."},
+      {ico:"⚠️",txt:"Escándalo de los 'falsos positivos': civiles presentados como guerrilleros."},
+    ],
+    datos:[{n:"8",l:"Años en poder",c:"#CE1126"},{n:"-90%",l:"Secuestros",c:"#9B5DE5"},{n:"62%",l:"Votos 2006",c:"#17a84a"}],
+    cita:"\"Mano firme, corazón grande.\""
+  },
+  {
+    nombre:"Juan Manuel Santos",
+    inicio:2010, fin:2018,
+    partido:"Partido de la U",
+    tag:"Centro", tagColor:"#FF6D00",
+    color:"#FF6D00",
+    emoji:"🏆",
+    desc:"Santos ganó el Premio Nobel de la Paz en 2016 gracias al Acuerdo de Paz con las FARC, que terminó con más de 52 años de guerra. También buscó que Colombia entrara en la OCDE y lanzó el mayor plan de infraestructura vial de la historia del país.",
+    vocab:[
+      {word:"el acuerdo",       def:"agreement / deal",  bg:"#FF6D00"},
+      {word:"firmar",           def:"to sign",           bg:"#FF6D00"},
+      {word:"las víctimas",     def:"victims",           bg:"#9B5DE5"},
+      {word:"el Premio Nobel",  def:"Nobel Prize",       bg:"#FF6D00"},
+      {word:"la infraestructura",def:"infrastructure",   bg:"#003893"},
+      {word:"la reconciliación",def:"reconciliation",    bg:"#17a84a"},
+    ],
+    pills:["Nobel","acuerdo","víctimas"],
+    logros:[
+      {ico:"🕊️",txt:"Acuerdo de Paz con las FARC el 24 de noviembre de 2016: fin de 52 años de conflicto."},
+      {ico:"🏆",txt:"Premio Nobel de la Paz 2016 en Oslo."},
+      {ico:"🛣️",txt:"Programa 4G: mayor inversión en carreteras de la historia del país."},
+      {ico:"📈",txt:"Inició el proceso de adhesión de Colombia a la OCDE."},
+    ],
+    datos:[{n:"8",l:"Años en poder",c:"#FF6D00"},{n:"2016",l:"Nobel de Paz",c:"#FF6D00"},{n:"52",l:"Años de guerra",c:"#9B5DE5"}],
+    cita:"\"La paz no es el silencio de los fusiles. Es la victoria de la esperanza sobre el miedo.\""
+  },
+  {
+    nombre:"Iván Duque",
+    inicio:2018, fin:2022,
+    partido:"Centro Democrático",
+    tag:"Centro Dem.", tagColor:"#17a84a",
+    color:"#17a84a",
+    emoji:"😷",
+    desc:"El presidente más joven de la era moderna (41 años). Su gobierno enfrentó la pandemia del COVID-19 y el gran Paro Nacional de 2021. Colombia acogió a casi 2 millones de migrantes venezolanos y se incorporó oficialmente a la OCDE.",
+    vocab:[
+      {word:"la pandemia",      def:"pandemic",          bg:"#9B5DE5"},
+      {word:"el desempleo",     def:"unemployment",      bg:"#003893"},
+      {word:"protestar",        def:"to protest",        bg:"#17a84a"},
+      {word:"migrar",           def:"to migrate",        bg:"#00B4D8"},
+      {word:"la vacuna",        def:"vaccine",           bg:"#17a84a"},
+      {word:"el migrante",      def:"migrant",           bg:"#00B4D8"},
+    ],
+    pills:["pandemia","migrantes","protesta"],
+    logros:[
+      {ico:"😷",txt:"Gestionó la pandemia con el programa 'Ingreso Solidario'."},
+      {ico:"✊",txt:"Paro Nacional de 2021: mayor movimiento de protesta reciente del país."},
+      {ico:"🇻🇪",txt:"Estatuto de Protección para 1,8 millones de migrantes venezolanos."},
+      {ico:"🏛️",txt:"Colombia entró oficialmente en la OCDE en 2020."},
+    ],
+    datos:[{n:"41",l:"Años al inicio",c:"#CE1126"},{n:"1.8M",l:"Migrantes",c:"#00B4D8"},{n:"4",l:"Años en poder",c:"#17a84a"}],
+    cita:"\"Colombia tiene la biodiversidad y la determinación para ser una potencia global.\""
+  },
+  {
+    nombre:"Gustavo Petro",
+    inicio:2022, fin:2026,
+    partido:"Pacto Histórico",
+    tag:"Izquierda", tagColor:"#9B5DE5",
+    color:"#9B5DE5",
+    emoji:"🌹",
+    desc:"Petro es el primer presidente de izquierda elegido democráticamente en Colombia. Con su vicepresidenta Francia Márquez, la primera mujer afrocolombiana en ese cargo, lanzó la 'Paz Total' con todos los grupos armados y propuso reformas sociales muy ambiciosas.",
+    vocab:[
+      {word:"la izquierda",     def:"the left (politics)",bg:"#9B5DE5"},
+      {word:"la desigualdad",   def:"inequality",         bg:"#17a84a"},
+      {word:"la transición",    def:"transition",         bg:"#003893"},
+      {word:"reformar",         def:"to reform",          bg:"#CE1126"},
+      {word:"histórico",        def:"historic",           bg:"#9B5DE5"},
+      {word:"la energía",       def:"energy",             bg:"#003893"},
+    ],
+    pills:["izquierda","reforma","histórico"],
+    logros:[
+      {ico:"🌹",txt:"Primer presidente de izquierda: elegido con el 50,4% de los votos."},
+      {ico:"👩🏿",txt:"Francia Márquez: primera vicepresidenta afrocolombiana de la historia."},
+      {ico:"🕊️",txt:"Política de 'Paz Total': diálogos con el ELN y otros grupos armados."},
+      {ico:"🛢️",txt:"Anunció el fin de nuevos contratos de exploración de petróleo."},
+    ],
+    datos:[{n:"50.4%",l:"Votos",c:"#9B5DE5"},{n:"2022",l:"Elección",c:"#9B5DE5"},{n:"1er",l:"Pdte izquierda",c:"#9B5DE5"}],
+    cita:"\"El cambio llegó a Colombia. Es el momento del pueblo.\""
+  },
 ];
 
-const track=document.getElementById('tlTrack');
-DATA.forEach((p,i)=>{
-  const node=document.createElement('div'); node.className='tl-node'; node.style.color=p.color;
-  node.innerHTML=`
-  <div class="tl-card" style="color:${p.color}">
-    <div class="tl-card-top"></div>
-    <span class="tl-emoji-card">${p.emoji}</span>
-    <div class="tl-year">${p.inicio}</div>
-    <div class="tl-name">${p.nombre}</div>
-    <div class="tl-partido">${p.partido}</div>
-    <span class="tl-badge">${p.tag}</span>
-  </div>
-  <div class="tl-connector"></div>
-  <div class="tl-dot"></div>
-  <div class="tl-axis-year">${p.inicio}–${p.fin}</div>
+/* ── BUILD CONFETTI ── */
+const hero = document.getElementById('heroEl');
+const colors = ['#FCD116','#CE1126','#003893','#17a84a','#FF6D00','#9B5DE5','#00B4D8'];
+for(let i=0;i<28;i++){
+  const d = document.createElement('div');
+  d.className='confetti-dot';
+  const s = 6+Math.random()*14;
+  d.style.cssText=`
+    width:${s}px;height:${s}px;
+    background:${colors[Math.floor(Math.random()*colors.length)]};
+    left:${Math.random()*100}%;
+    bottom:${-20+Math.random()*30}%;
+    opacity:${.4+Math.random()*.5};
+    animation-duration:${5+Math.random()*8}s;
+    animation-delay:${Math.random()*5}s;
   `;
-  node.addEventListener('click',()=>openModal(p));
-  track.appendChild(node);
-  if(i<DATA.length-1){ const sp=document.createElement('div'); sp.style.cssText='width:60px;flex-shrink:0;'; track.appendChild(sp);}
-});
-
-function openModal(p){
-  document.getElementById('modalBody').innerHTML=`
-    <span class="m-tag" style="background:${p.color}">${p.tag}</span>
-    <span class="m-emoji">${p.emoji}</span>
-    <div class="m-name">${p.nombre}</div>
-    <div class="m-period">📅 ${p.inicio} – ${p.fin}</div>
-    <div class="m-partido">🏛️ ${p.partido}</div>
-    <p class="m-desc">${p.desc}</p>
-    <div class="m-section">🏆 Logros</div>
-    <ul class="m-logros">${p.logros.map(l=>`<li style="border-color:${p.color}"><span class="ico">${l.ico}</span>${l.txt}</li>`).join('')}</ul>
-    <div class="m-section">📊 Datos</div>
-    <div class="m-datos">${p.datos.map(d=>`<div class="m-dato"><div class="dn" style="color:${p.color}">${d.n}</div><div class="dl">${d.l}</div></div>`).join('')}</div>
-  `;
-  document.getElementById('overlay').classList.add('open'); document.body.style.overflow='hidden';
+  hero.appendChild(d);
 }
 
-document.getElementById('closeBtn').addEventListener('click',()=>{document.getElementById('overlay').classList.remove('open'); document.body.style.overflow='';});
-document.getElementById('overlay').addEventListener('click',e=>{if(e.target===document.getElementById('overlay')){document.getElementById('overlay').classList.remove('open');document.body.style.overflow='';}});
-</script>
+/* ── BUILD TIMELINE ── */
+const track = document.getElementById('tlTrack');
 
+PRES.forEach((p, i) => {
+  const node = document.createElement('div');
+  node.className = 'tl-node';
+  node.style.color = p.color;
+
+  const pillsHTML = p.pills.map(w =>
+    `<span class="tl-pill">${w}</span>`
+  ).join('');
+
+  node.innerHTML = `
+    <div class="tl-card">
+      <span class="tl-emoji">${p.emoji}</span>
+      <div class="tl-year">${p.inicio}</div>
+      <div class="tl-name">${p.nombre}</div>
+      <div class="tl-pills">${pillsHTML}</div>
+      <div class="tl-hint">▸ clic para más</div>
+    </div>
+    <div class="tl-stem"></div>
+    <div class="tl-dot"></div>
+    <div class="tl-axis-year">${p.inicio}–${p.fin}</div>
+  `;
+
+  node.addEventListener('click', () => openModal(p));
+  track.appendChild(node);
+
+  if(i < PRES.length - 1){
+    const sp = document.createElement('div');
+    sp.className = 'tl-spacer';
+    track.appendChild(sp);
+  }
+});
+
+/* ── MODAL ── */
+function openModal(p) {
+  const vocabHTML = p.vocab.map(v => `
+    <div class="m-vocab-pill" style="border-color:${v.bg};background:${v.bg}18;">
+      <span class="m-vocab-word" style="color:${v.bg}">${v.word}</span>
+      <span class="m-vocab-def">${v.def}</span>
+    </div>
+  `).join('');
+
+  const logrosHTML = p.logros.map(l => `
+    <li style="border-color:${p.color}">
+      <span class="ico">${l.ico}</span>${l.txt}
+    </li>
+  `).join('');
+
+  const datosHTML = p.datos.map(d => `
+    <div class="m-dato" style="border-color:${d.c}">
+      <div class="dn" style="color:${d.c}">${d.n}</div>
+      <div class="dl">${d.l}</div>
+    </div>
+  `).join('');
+
+  document.getElementById('modalInner').innerHTML = `
+    <span class="m-tag" style="background:${p.tagColor}">${p.tag}</span>
+    <span class="m-emoji-big">${p.emoji}</span>
+    <div class="m-year" style="color:${p.color}">${p.inicio}</div>
+    <div class="m-name">${p.nombre}</div>
+    <div class="m-period" style="color:${p.color}">📅 ${p.inicio} – ${p.fin}</div>
+    <div class="m-partido">🏛️ ${p.partido}</div>
+    <p class="m-desc">${p.desc}</p>
+
+    <div class="m-vocab-block">
+      <div class="m-vocab-header" style="color:${p.color}">📘 Vocabulario A2/B1</div>
+      <div class="m-vocab-grid">${vocabHTML}</div>
+    </div>
+
+    <div class="m-section" style="color:${p.color}">🏆 Logros principales</div>
+    <ul class="m-logros">${logrosHTML}</ul>
+
+    <div class="m-section" style="color:${p.color}">📊 En cifras</div>
+    <div class="m-datos">${datosHTML}</div>
+
+    <div class="m-cita" style="border-color:${p.color}">
+      ${p.cita}
+      <cite>— ${p.nombre}</cite>
+    </div>
+  `;
+
+  document.getElementById('overlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+document.getElementById('closeBtn').addEventListener('click', closeModal);
+document.getElementById('overlay').addEventListener('click', e => {
+  if(e.target===document.getElementById('overlay')) closeModal();
+});
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); });
+function closeModal(){
+  document.getElementById('overlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+/* ── ARROWS ── */
+const scr = document.getElementById('tlScroll');
+document.getElementById('btnLeft').addEventListener('click', () => scr.scrollBy({left:-300,behavior:'smooth'}));
+document.getElementById('btnRight').addEventListener('click', () => scr.scrollBy({left:300,behavior:'smooth'}));
+
+/* ── DRAG SCROLL ── */
+let isDown=false,startX,scrollLeft;
+scr.addEventListener('mousedown',e=>{isDown=true;startX=e.pageX-scr.offsetLeft;scrollLeft=scr.scrollLeft;});
+scr.addEventListener('mouseleave',()=>isDown=false);
+scr.addEventListener('mouseup',()=>isDown=false);
+scr.addEventListener('mousemove',e=>{
+  if(!isDown)return; e.preventDefault();
+  scr.scrollLeft=scrollLeft-(e.pageX-scr.offsetLeft-startX)*1.4;
+});
+
+/* ── MUSIC PLAYER ── */
+// Uses YouTube IFrame API to play a Colombian playlist / track audio-only via embed
+// Since we can't load copyrighted audio directly, we use a YT embed in background
+let ytReady=false, ytPlayer=null, isPlaying=false;
+
+// Inject YT API
+const tag=document.createElement('script');
+tag.src='https://www.youtube.com/iframe_api';
+document.head.appendChild(tag);
+
+// Create hidden YT iframe container
+const ytDiv=document.createElement('div');
+ytDiv.id='yt-player';
+ytDiv.style.cssText='position:fixed;bottom:-200px;left:-200px;width:1px;height:1px;opacity:0;pointer-events:none;';
+document.body.appendChild(ytDiv);
+
+window.onYouTubeIframeAPIReady=function(){
+  ytPlayer=new YT.Player('yt-player',{
+    height:'1', width:'1',
+    videoId:'6YRXGU_h5-o', // Karol G - Mix colombiano (audio)
+    playerVars:{autoplay:0,loop:1,playlist:'6YRXGU_h5-o',controls:0,disablekb:1,fs:0,iv_load_policy:3,modestbranding:1,rel:0,showinfo:0},
+    events:{
+      onReady:()=>{ ytReady=true; },
+      onStateChange:(e)=>{
+        if(e.data===YT.PlayerState.ENDED && ytPlayer) ytPlayer.playVideo();
+      }
+    }
+  });
+};
+
+document.getElementById('musicBtn').addEventListener('click',()=>{
+  if(!ytReady){ alert('⏳ El reproductor se está cargando, intenta de nuevo en un momento.'); return; }
+  if(isPlaying){
+    ytPlayer.pauseVideo();
+    isPlaying=false;
+    document.getElementById('musicBtn').textContent='▶';
+    document.getElementById('musicWaves').classList.add('paused');
+  } else {
+    ytPlayer.playVideo();
+    isPlaying=true;
+    document.getElementById('musicBtn').textContent='⏸';
+    document.getElementById('musicWaves').classList.remove('paused');
+  }
+});
+</script>
 </body>
 </html>
